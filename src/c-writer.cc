@@ -1110,7 +1110,7 @@ void CWriter::WriteElemInitializers() {
   if (table && module_->num_table_imports == 0) {
     uint32_t max =
         table->elem_limits.has_max ? table->elem_limits.max : UINT32_MAX;
-    Write("wasm_rt_allocate_table(&(sbx->", ExternalRef(table->name), ", ",
+    Write("wasm_rt_allocate_table(&(sbx->", ExternalRef(table->name), "), ",
           table->elem_limits.initial, ", ", max, ");", Newline());
   }
   Index elem_segment_index = 0;
@@ -1234,7 +1234,7 @@ void CWriter::WriteExports(WriteExportsKind kind) {
 
 void CWriter::WriteInit() {
   Write(Newline(), "void* WASM_RT_ADD_PREFIX(create_wasm2c_sandbox)(void) ", OpenBrace());
-  Write("wasm2c_sandbox_t* sbx = (wasm2c_sandbox_t*)calloc(sizeof(wasm2c_sandbox_t));", Newline());
+  Write("wasm2c_sandbox_t* sbx = (wasm2c_sandbox_t*) calloc(sizeof(wasm2c_sandbox_t));", Newline());
   Write("init_func_types(sbx);", Newline());
   Write("init_globals(sbx);", Newline());
   Write("init_memory(sbx);", Newline());
@@ -1246,7 +1246,7 @@ void CWriter::WriteInit() {
   Write("return sbx;", Newline());
   Write(CloseBrace(), Newline(), Newline());
 
-  Write("void WASM_RT_ADD_PREFIX(destroy_wasm2c_sandbox)(void* sbx)", OpenBrace());
+  Write("void WASM_RT_ADD_PREFIX(destroy_wasm2c_sandbox)(void* sbx) ", OpenBrace());
   Write("free(sbx);", Newline());
   Write(CloseBrace(), Newline());
 }
@@ -2173,7 +2173,7 @@ void CWriter::Write(const StoreExpr& expr) {
 
   Memory* memory = module_->memories[module_->GetMemoryIndex(expr.memidx)];
 
-  Write(func, "(", ExternalPtr(memory->name), ", (u64)(", StackVar(1), ")");
+  Write(func, "(&(sbx->", ExternalRef(memory->name), "), (u64)(", StackVar(1), ")");
   if (expr.offset != 0)
     Write(" + ", expr.offset);
   Write(", ", StackVar(0), ");", Newline());

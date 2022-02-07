@@ -11,7 +11,6 @@ const char SECTION_NAME(declarations)[] =
 "\n"
 "#define TRAP(x) (wasm_rt_trap(WASM_RT_TRAP_##x), 0)\n"
 "\n"
-"// Sandbox: remove stack counting from prologue/epilogue\n"
 "#define FUNC_PROLOGUE\n"
 "\n"
 "#define FUNC_EPILOGUE\n"

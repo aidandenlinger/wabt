@@ -29,7 +29,6 @@ const char SECTION_NAME(top)[] =
 "typedef float f32;\n"
 "typedef double f64;\n"
 "\n"
-"// Sandbox: ADD_PREFIX functions with Sandbox\n"
 "extern void* WASM_RT_ADD_PREFIX(create_wasm2c_sandbox)(void);\n"
 "extern void WASM_RT_ADD_PREFIX(destroy_wasm2c_sandbox)(void*);\n"
 ;
